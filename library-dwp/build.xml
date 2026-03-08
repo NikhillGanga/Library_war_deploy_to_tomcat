@@ -1,0 +1,67 @@
+<project name="library-dwp" default="deploy" basedir=".">
+
+    <!-- ===== Properties ===== -->
+    <property name="src.dir" value="src/main/java"/>
+    <property name="resources.dir" value="src/main/resources"/>
+    <property name="web.dir" value="src/main/webapp"/>
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="war.dir" value="${build.dir}/war"/>
+
+    <!-- CHANGE this to your Tomcat location -->
+    <property name="tomcat.home" value="C:\Users\CEPL\Downloads\apache-tomcat-9.0.115-windows-x64\apache-tomcat-9.0.115"/>
+
+    <!-- ===== Clean ===== -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <!-- ===== Compile ===== -->
+    <target name="compile" depends="clean">
+
+        <mkdir dir="${classes.dir}"/>
+
+        <javac srcdir="${src.dir}"
+               destdir="${classes.dir}"
+               includeantruntime="false">
+
+            <classpath>
+                <fileset dir="${web.dir}/WEB-INF/lib" includes="**/*.jar"/>
+            </classpath>
+
+        </javac>
+
+        <!-- Copy resources -->
+        <copy todir="${classes.dir}">
+            <fileset dir="${resources.dir}"/>
+        </copy>
+
+    </target>
+
+    <!-- ===== Create WAR ===== -->
+    <target name="war" depends="compile">
+
+        <mkdir dir="${war.dir}"/>
+
+        <war destfile="${war.dir}/library-war.war"
+             webxml="${web.dir}/WEB-INF/web.xml">
+
+            <fileset dir="${web.dir}"/>
+
+            <classes dir="${classes.dir}"/>
+
+            <lib dir="${web.dir}/WEB-INF/lib"/>
+
+        </war>
+
+    </target>
+
+    <!-- ===== Deploy ===== -->
+    <target name="deploy" depends="war">
+
+        <copy file="${war.dir}/library-war.war"
+              todir="${tomcat.home}/webapps"/>
+
+    </target>
+
+</project>

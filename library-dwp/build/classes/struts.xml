@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+"https://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.objectFactory" value="spring" />
+
+	<package name="default" namespace="/" extends="struts-default">
+
+
+		<!-- Add Book Page -->
+		 <action name="addBookPage">
+			<result type="freemarker">/addbook.ftl</result>
+		</action> 
+
+		<!-- Save Book -->
+		<action name="addBook"
+			class="com.example.training.library.action.AddBookAction">
+			<result name="success" type="redirectAction">viewBook</result>
+			<result name="input" type="freemarker">/addbook.ftl</result>
+		</action>
+
+		<!-- View All Books -->
+		<action name="viewBook"
+			class="com.example.training.library.action.ViewBookAction">
+			<result name="success">/book.jsp</result>
+			<result name="input" type="freemarker">/book.ftl</result>
+		</action>
+
+		<!-- Search Book by ID - show form + result -->
+		<action name="searchBook"
+			class="com.example.training.library.action.SearchBookAction">
+			<result>/searchbook.jsp</result>
+
+		</action>
+
+		<!-- Open Edit Form (load book by id) -->
+		<action name="editBookPage"
+			class="com.example.training.library.action.EditBookAction">
+			<result>/editbook.jsp</result>
+		</action>
+
+		<!-- Update Book -->
+		<action name="updateBook"
+			class="com.example.training.library.action.UpdateBookAction">
+			<result name="success" type="redirectAction">viewBook</result>
+			<result name="input">/editbook.jsp</result>
+		</action>
+
+		<!-- Delete Book -->
+		<action name="deleteBook"
+			class="com.example.training.library.action.DeleteBookAction">
+			<result type="redirectAction">viewBook</result>
+		</action>
+
+	</package>
+</struts>
